@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 14:48:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/01 15:34:04 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/01 16:37:29 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ bool	valid_args(char **av)
 	while (*av)
 	{
 		arg = *av;
-		if (ft_atoi(arg) < 0)
-			return (printf("Negative number found\n"), false);
+		if (ft_atoi(arg) <= 0)
+			return (printf("Negative number found or 0\n"), false);
 		while (*arg)
 		{
 			if (*arg > '9' || *arg < '0')
