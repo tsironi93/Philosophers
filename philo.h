@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/03 16:15:33 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/04 19:10:16 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ typedef struct s_philo
 	uint8_t			id;
 	pthread_t		thread;
 	pthread_mutex_t	mutex;
-	bool			is_fork_available;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*left_fork;
+	bool			philo_ate;
 	struct s_data	*data;
 }			t_philo;
 
@@ -39,17 +41,22 @@ typedef struct s_data
 	uint16_t		time_to_eat;
 	uint16_t		time_to_sleep;
 	uint16_t		number_of_times_each_philosopher_must_eat;
-	struct s_philo	philos[MAX_P];
+	t_philo			philos[MAX_P];
+	pthread_mutex_t	forks[MAX_P];
+	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t	sleep_mutex;
+	pthread_mutex_t	print_mutex;
 	uint64_t		starting_time;
 }				t_data;
 
 int			ft_atoi(const char *str);
 bool		valid_args(char **av);
 uint64_t	get_time(void);
-void		init_data(int ac, char **av, struct s_data *data);
-void		init_philos(struct s_data *data);
-void		create_threads(struct s_data *data);
+bool		init_data(int ac, char **av, t_data *data);
+bool		init_philos(struct s_data *data);
+bool		create_threads(t_data *data);
+bool		destroy_threads(t_data *data);
 void		*lets_play(void *arg);
-void		get_forks(t_philo *philo, t_philo *right_philo, t_data *data);
+void		get_forks(t_philo *philo, t_data *data);
 
 #endif
