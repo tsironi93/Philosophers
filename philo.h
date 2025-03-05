@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/04 19:10:16 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/05 17:05:48 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@
 # include <stdint.h>
 # include <stdbool.h>
 # include <stdlib.h>
+# include <string.h>
+
+# define RESET   "\x1b[0m"
+# define OLIVE "\x1b[2;33m"
+
+# define RED     "\x1b[91m"
+# define BLACK   "\x1b[90m"
+# define GREEN   "\x1b[92m"
+# define YELLOW  "\x1b[93m"
+# define BLUE    "\x1b[94m"
+# define MAGENTA "\x1b[95m"
+# define CYAN    "\x1b[96m"
+# define WHITE   "\x1b[97m"
 
 # define MAX_P 200
 
@@ -31,6 +44,7 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	bool			philo_ate;
+	uint64_t		time_to_eat_again;
 	struct s_data	*data;
 }			t_philo;
 
@@ -47,6 +61,7 @@ typedef struct s_data
 	pthread_mutex_t	sleep_mutex;
 	pthread_mutex_t	print_mutex;
 	uint64_t		starting_time;
+	bool			sim_stop;
 }				t_data;
 
 int			ft_atoi(const char *str);
@@ -58,5 +73,6 @@ bool		create_threads(t_data *data);
 bool		destroy_threads(t_data *data);
 void		*lets_play(void *arg);
 void		get_forks(t_philo *philo, t_data *data);
+bool		monitor(t_data *data, t_philo *philo);
 
 #endif
