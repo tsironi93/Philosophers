@@ -6,11 +6,11 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 14:48:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/01 16:37:29 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/07 10:02:43 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 bool	valid_args(char **av)
 {

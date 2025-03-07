@@ -6,11 +6,11 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:20:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/05 16:23:59 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/07 10:02:57 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 bool	init_data(int ac, char **av, t_data *data)
 {

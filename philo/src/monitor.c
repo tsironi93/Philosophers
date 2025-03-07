@@ -6,11 +6,11 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:34:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/05 16:37:18 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/07 10:28:05 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 #include <pthread.h>
 #include <stdio.h>
 
@@ -23,7 +23,6 @@ bool	check_for_dead(t_data *data, t_philo *philo)
 	while (++i < data->number_of_philosophers)
 	{
 		current_time = get_time();
-		//printf("current_time:%llu\t|\time_to_eat_again:%llu\n", current_time - data->starting_time, philo[i].time_to_eat_again);
 		if (current_time - data->starting_time > philo[i].time_to_eat_again)
 		{
 			pthread_mutex_lock(&philo[i].mutex);

@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/05 17:05:48 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/07 10:39:35 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	bool			philo_ate;
 	uint64_t		time_to_eat_again;
+	uint64_t		current_time;
 	struct s_data	*data;
 }			t_philo;
 

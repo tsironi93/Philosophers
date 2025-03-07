@@ -6,11 +6,11 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:36 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/01 13:09:39 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/07 10:03:36 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 int	ft_atoi(const char *str)
 {
