@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 09:33:25 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:43 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ typedef struct s_philo
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
-	bool			has_right_fork;
-	bool			has_left_fork;
 	bool			philo_ate;
 	uint64_t		time_to_eat_again;
 	struct s_data	*data;
@@ -79,5 +77,6 @@ void		*lets_play(void *arg);
 void		get_forks(t_philo *philo, t_data *data);
 bool		monitor(t_data *data, t_philo *philo);
 void		p(t_data *data, char *color, char *msg, int id);
+void		uwait(uint32_t wait);
 
 #endif

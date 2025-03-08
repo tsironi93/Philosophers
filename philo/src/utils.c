@@ -6,11 +6,20 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:36 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 09:53:42 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:13 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+void	uwait(uint32_t wait)
+{
+	uint64_t	start_time;
+
+	start_time = get_time();
+	while ((get_time() - start_time) < wait)
+		usleep(500);
+}
 
 uint64_t	get_time(void)
 {
