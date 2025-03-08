@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:43:59 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 16:29:36 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/08 17:08:49 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	start_eating(t_philo *philo, t_data *data)
 
 void	get_forks(t_philo *philo, t_data *data)
 {
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->right_fork);
 		p(data, OLIVE, "has taken a fork", philo->id);
@@ -72,12 +72,12 @@ void	*lets_play(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
-	if (philo->id / 2 == 0)
+	if (philo->id % 2 == 1)
 	{
 		start_thinking(philo, data);
 		uwait(data->time_to_eat / 2);
 	}
-	while (!data->sim_stop)
+	while (1)
 	{
 		get_forks(philo, data);
 		start_eating(philo, data);
@@ -97,7 +97,7 @@ int	main(int ac, char **av)
 		return (-1);
 	if (!create_threads(&data))
 		return (-1);
-	while (!data.sim_stop)
+	while (1)
 		if (!monitor(&data, data.philos))
 			return (0);
 	if (!destroy_threads(&data))

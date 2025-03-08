@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:20:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 15:44:34 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:56:16 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ bool	init_data(int ac, char **av, t_data *data)
 		data->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 	data->sim_stop = false;
 	pthread_mutex_init(&data->print_mutex, NULL);
-	pthread_mutex_init(&data->meal_mutex, NULL);
-	pthread_mutex_init(&data->sleep_mutex, NULL);
 	while (++i < data->number_of_philosophers)
 		pthread_mutex_init(&data->forks[i], NULL);
 	pthread_mutex_init(&data->monitor, NULL);
@@ -51,11 +49,9 @@ bool	init_philos(t_data *data)
 		data->philos[i].right_fork = &data->forks[i];
 		data->philos[i].left_fork
 			= &data->forks[(i + 1) % data->number_of_philosophers];
-		data->philos[i].philo_ate = false;
 		data->philos[i].time_to_eat_again = data->time_to_die;
 		data->philos[i].data = data;
 	}
-	data->starting_time = get_time();
 	return (true);
 }
 
@@ -64,10 +60,9 @@ bool	create_threads(t_data *data)
 	int	i;
 
 	i = -1;
+	data->starting_time = get_time();
 	while (++i < data->number_of_philosophers)
 	{
-		if (pthread_mutex_init(&data->philos[i].mutex, NULL) != 0)
-			return (printf("Error initializing philosopher mutex\n", false));
 		if (pthread_create(&data->philos[i].thread, NULL, lets_play,
 				(void *)&data->philos[i]))
 			return (printf("Error creating threads\n"), false);

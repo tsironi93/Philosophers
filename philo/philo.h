@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 16:20:43 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/08 16:36:17 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,8 @@ typedef struct s_philo
 {
 	uint8_t			id;
 	pthread_t		thread;
-	pthread_mutex_t	mutex;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
-	bool			philo_ate;
 	uint64_t		time_to_eat_again;
 	struct s_data	*data;
 }			t_philo;
@@ -59,8 +57,6 @@ typedef struct s_data
 	t_philo			philos[MAX_P];
 	pthread_mutex_t	forks[MAX_P];
 	pthread_mutex_t	monitor;
-	pthread_mutex_t	meal_mutex;
-	pthread_mutex_t	sleep_mutex;
 	pthread_mutex_t	print_mutex;
 	uint64_t		starting_time;
 	bool			sim_stop;
