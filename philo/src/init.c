@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:20:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/07 10:02:57 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/07 16:00:48 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	init_philos(t_data *data)
 	i = -1;
 	while (++i < data->number_of_philosophers)
 	{
-		data->philos[i].id = i + 1;
+		data->philos[i].id = i;
 		data->philos[i].right_fork = &data->forks[i];
 		data->philos[i].left_fork
 			= &data->forks[(i + 1) % data->number_of_philosophers];

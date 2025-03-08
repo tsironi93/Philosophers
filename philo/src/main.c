@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:43:59 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/07 10:45:23 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/08 09:42:33 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,39 @@
 
 void	start_thinking(t_philo *philo, t_data *data)
 {
+	u_int64_t	current_time;
+
+	current_time = get_time() - data->starting_time;
 	pthread_mutex_lock(&philo->mutex);
-	while (philo->time_to_eat_again > philo->current_time)
+	while (philo->time_to_eat_again > current_time)
 	{
 		pthread_mutex_lock(&data->print_mutex);
-		printf(MAGENTA "%llu %d is sleeping\n" RESET, philo->current_time - data->starting_time,
+		current_time = get_time() - data->starting_time;
+		printf(MAGENTA "%llu %d is sleeping\n" RESET, current_time,
 			philo->id);
-		usleep(philo->time_to_eat_again - philo->current_time - 50);
+		usleep(philo->time_to_eat_again - current_time - 50);
 	}
 	pthread_mutex_unlock(&philo->mutex);
 }
 
 void	start_sleeping(t_philo *philo, t_data *data)
 {
-	pthread_mutex_lock(&philo->mutex);
+	p(data, CYAN, "is sleeping", philo->id);
 	usleep(data->time_to_sleep * 1000);
-	pthread_mutex_lock(&data->print_mutex);
-	printf(CYAN "%llu %d is sleeping\n" RESET, philo->current_time - data->starting_time,
-		philo->id);
-	pthread_mutex_unlock(&data->print_mutex);
-	pthread_mutex_unlock(&philo->mutex);
 }
 
 void	start_eating(t_philo *philo, t_data *data)
 {
-	pthread_mutex_lock(&philo->mutex);
+	u_int64_t	current_time;
+
+	p(data, YELLOW, "is eating", philo->id);
 	usleep(data->time_to_eat * 1000);
-	pthread_mutex_lock(&data->print_mutex);
-	printf(YELLOW "%llu %d is eating\n" RESET, philo->current_time - data->starting_time,
-		philo->id);
-	pthread_mutex_unlock(&data->print_mutex);
-	philo->time_to_eat_again += data->time_to_die;
-	pthread_mutex_unlock(&philo->mutex);
+	current_time = get_time() - data->starting_time;
+	philo->time_to_eat_again = current_time + data->time_to_die;
 	pthread_mutex_unlock(philo->left_fork);
+	p(data, OLIVE, "left fork is down", philo->id);
 	pthread_mutex_unlock(philo->right_fork);
+	p(data, OLIVE, "right fork is down", philo->id);
 }
 
 void	get_forks(t_philo *philo, t_data *data)
@@ -55,21 +54,17 @@ void	get_forks(t_philo *philo, t_data *data)
 	if (philo->id % 2 == 1)
 	{
 		pthread_mutex_lock(philo->right_fork);
+		p(data, OLIVE, "has taken a fork", philo->id);
 		pthread_mutex_lock(philo->left_fork);
+		p(data, OLIVE, "has taken a fork", philo->id);
 	}
 	else
 	{
 		pthread_mutex_lock(philo->left_fork);
+		p(data, OLIVE, "has taken a fork", philo->id);
 		pthread_mutex_lock(philo->right_fork);
+		p(data, OLIVE, "has taken a fork", philo->id);
 	}
-	pthread_mutex_lock(&data->print_mutex);
-	printf(OLIVE "%llu %d has taken a fork\n" RESET, philo->current_time - data->starting_time,
-		philo->id);
-	pthread_mutex_unlock(&data->print_mutex);
-	pthread_mutex_lock(&data->print_mutex);
-	printf(OLIVE "%llu %d has taken a fork\n" RESET, philo->current_time - data->starting_time,
-		philo->id);
-	pthread_mutex_unlock(&data->print_mutex);
 }
 
 void	*lets_play(void *arg)
@@ -81,19 +76,18 @@ void	*lets_play(void *arg)
 	data = philo->data;
 	while (!data->sim_stop)
 	{
-		philo->current_time = get_time();
 		//if (philo->philo_ate)
 			//start_thinking(philo, data);
-		if (data->sim_stop)
-			break ;
 		if (!philo->philo_ate)
 		{
 			get_forks(philo, data);
+			if (data->sim_stop)
+				break ;
 			start_eating(philo, data);
+			if (data->sim_stop)
+				break ;
+			start_sleeping(philo, data);
 		}
-		if (data->sim_stop)
-			break ;
-		start_sleeping(philo, data);
 	}
 	return (NULL);
 }
@@ -109,7 +103,7 @@ int	main(int ac, char **av)
 	if (!create_threads(&data))
 		return (-1);
 	//while (!data.sim_stop)
-		//monitor(&data, data.philos);
+	//	monitor(&data, data.philos);
 	if (!destroy_threads(&data))
 		return (-1);
 	return (0);

@@ -6,11 +6,30 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:36 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/07 10:03:36 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/08 09:53:42 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+uint64_t	get_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL))
+		return (0);
+	return ((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000));
+}
+
+void	p(t_data *data, char *color, char *msg, int id)
+{
+	uint64_t	current_time;
+
+	pthread_mutex_lock(&data->print_mutex);
+	current_time = get_time() - data->starting_time;
+	printf("%s%" PRIu64 " %d %s" RESET "\n", color, current_time, id, msg);
+	pthread_mutex_unlock(&data->print_mutex);
+}
 
 int	ft_atoi(const char *str)
 {

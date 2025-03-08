@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/07 10:39:35 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/08 09:33:25 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <string.h>
+# include <inttypes.h>
 
 # define RESET   "\x1b[0m"
 # define OLIVE "\x1b[2;33m"
@@ -43,9 +44,10 @@ typedef struct s_philo
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
+	bool			has_right_fork;
+	bool			has_left_fork;
 	bool			philo_ate;
 	uint64_t		time_to_eat_again;
-	uint64_t		current_time;
 	struct s_data	*data;
 }			t_philo;
 
@@ -58,6 +60,7 @@ typedef struct s_data
 	uint16_t		number_of_times_each_philosopher_must_eat;
 	t_philo			philos[MAX_P];
 	pthread_mutex_t	forks[MAX_P];
+	pthread_mutex_t	monitor;
 	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t	sleep_mutex;
 	pthread_mutex_t	print_mutex;
@@ -75,5 +78,6 @@ bool		destroy_threads(t_data *data);
 void		*lets_play(void *arg);
 void		get_forks(t_philo *philo, t_data *data);
 bool		monitor(t_data *data, t_philo *philo);
+void		p(t_data *data, char *color, char *msg, int id);
 
 #endif
