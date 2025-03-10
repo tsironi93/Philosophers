@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:36 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 16:20:13 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/10 17:47:51 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,27 @@ uint64_t	get_time(void)
 	if (gettimeofday(&time, NULL))
 		return (0);
 	return ((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000));
+}
+
+void	fork_availability(t_data *data, t_philo *philo, bool fork, bool avail)
+{
+	pthread_mutex_lock(&data->monitor);
+	if (fork)
+		data->is_fork_available[(philo->id + 1)
+			% data->number_of_philosophers] = avail;
+	else
+		data->is_fork_available[philo->id] = avail;
+	pthread_mutex_unlock(&data->monitor);
+}
+
+bool	sim(t_data *data)
+{
+	bool	res;
+
+	pthread_mutex_lock(&data->monitor);
+	res = data->sim_stop;
+	pthread_mutex_unlock(&data->monitor);
+	return (res);
 }
 
 void	p(t_data *data, char *color, char *msg, int id)

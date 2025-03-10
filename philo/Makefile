@@ -5,10 +5,10 @@ BONUS_NAME	= 	_bonus
 HEADER	=	
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror -O2
+CFLAGS	=	-Wall -Wextra -Werror -O2 -g
 
 ifdef DEBUG
-FLAGS	+=	-fsanitize=threads -fno-omit-frame-pointer
+FLAGS	+=	-fsanitize=threads -fno-omit-frame-pointer -g
 endif
 
 SRC_DIR			=	src

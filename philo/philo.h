@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 23:31:36 by turmoil          ###   ########.fr       */
+/*   Updated: 2025/03/10 18:23:24 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	uint64_t		time_to_eat_again;
-    uint8_t         meals_ate;
+	uint8_t			meals_ate;
 	struct s_data	*data;
 }			t_philo;
 
@@ -57,6 +57,7 @@ typedef struct s_data
 	uint16_t		number_of_times_each_philosopher_must_eat;
 	t_philo			philos[MAX_P];
 	pthread_mutex_t	forks[MAX_P];
+	bool			is_fork_available[MAX_P];
 	pthread_mutex_t	monitor;
 	pthread_mutex_t	print_mutex;
 	uint64_t		starting_time;
@@ -75,5 +76,9 @@ void		get_forks(t_philo *philo, t_data *data);
 bool		monitor(t_data *data, t_philo *philo);
 void		p(t_data *data, char *color, char *msg, int id);
 void		uwait(uint32_t wait);
+bool		sim(t_data *data);
+void		fork_availability(t_data *data, t_philo *philo, bool fork,
+				bool avail);
+void		leave_forks(t_data *data);
 
 #endif

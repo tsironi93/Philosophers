@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:20:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/09 00:48:00 by turmoil          ###   ########.fr       */
+/*   Updated: 2025/03/10 18:23:02 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ bool	init_data(int ac, char **av, t_data *data)
 	data->sim_stop = false;
 	pthread_mutex_init(&data->print_mutex, NULL);
 	while (++i < data->number_of_philosophers)
+	{
 		pthread_mutex_init(&data->forks[i], NULL);
+		data->is_fork_available[i] = true;
+	}
 	pthread_mutex_init(&data->monitor, NULL);
 	return (true);
 }
@@ -50,7 +53,7 @@ bool	init_philos(t_data *data)
 		data->philos[i].left_fork
 			= &data->forks[(i + 1) % data->number_of_philosophers];
 		data->philos[i].time_to_eat_again = data->time_to_die;
-        data->philos[i].meals_ate = 0;
+		data->philos[i].meals_ate = 0;
 		data->philos[i].data = data;
 	}
 	return (true);
@@ -71,15 +74,25 @@ bool	create_threads(t_data *data)
 	return (true);
 }
 
+void	leave_forks(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->number_of_philosophers)
+	{
+		if (!data->is_fork_available[i])
+			pthread_mutex_unlock(&data->forks[i]);
+	}
+}
+
 bool	destroy_threads(t_data *data)
 {
 	int	i;
 
-	pthread_mutex_destroy(&data->print_mutex);
 	i = -1;
 	while (++i < data->number_of_philosophers)
 	{
-        pthread_mutex_unlock(&data->forks[i]);
 		if (pthread_join(data->philos[i].thread, NULL))
 			return (printf("Error joining threads\n"), false);
 		pthread_mutex_destroy(&data->forks[i]);
