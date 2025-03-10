@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:36 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/10 17:47:51 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/11 00:48:22 by turmoil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,36 @@ uint64_t	get_time(void)
 	return ((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000));
 }
 
-void	fork_availability(t_data *data, t_philo *philo, bool fork, bool avail)
+bool	my_strcmp(const char *s1, const char *s2)
 {
-	pthread_mutex_lock(&data->monitor);
-	if (fork)
-		data->is_fork_available[(philo->id + 1)
-			% data->number_of_philosophers] = avail;
+    while (*s1 && (*s1 == *s2))
+	{
+        s1++;
+        s2++;
+    }
+    return *s1 == *s2;
+}
+
+void	fork_assign(t_data *data, t_philo *philo, char *fork, bool set)
+{
+	if (my_strcmp(fork, "right"))
+	{
+		if (set)
+			while (data->forks_table[philo->id] == true  && !sim(data))
+				uwait(1);
+		pthread_mutex_lock(philo->right_fork);
+		data->forks_table[philo->id] = set;
+		pthread_mutex_unlock(philo->right_fork);
+	}
 	else
-		data->is_fork_available[philo->id] = avail;
-	pthread_mutex_unlock(&data->monitor);
+	{
+		if (set)
+			while (data->forks_table[(philo->id + 1) % data->number_of_philosophers] == true  && !sim(data))
+				uwait(1);
+		pthread_mutex_lock(philo->left_fork);
+		data->forks_table[(philo->id + 1) % data->number_of_philosophers] = set;
+		pthread_mutex_unlock(philo->left_fork);
+	}
 }
 
 bool	sim(t_data *data)

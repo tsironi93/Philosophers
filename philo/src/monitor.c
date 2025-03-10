@@ -6,12 +6,11 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:34:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/10 18:17:14 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/11 00:45:07 by turmoil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-#include <pthread.h>
 
 static bool	_check_for_dead(t_data *data, t_philo *philo)
 {
@@ -32,7 +31,6 @@ static bool	_check_for_dead(t_data *data, t_philo *philo)
 			data->sim_stop = true;
 			pthread_mutex_unlock(&data->monitor);
 			p(data, RED, "died", philo->id);
-			pthread_mutex_lock(&data->print_mutex);
 			return (false);
 		}
 	}
@@ -56,7 +54,6 @@ static bool	_check_meals(t_data *data, t_philo *philo)
 	pthread_mutex_lock(&data->monitor);
 	data->sim_stop = true;
 	pthread_mutex_unlock(&data->monitor);
-	pthread_mutex_lock(&data->print_mutex);
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/10 18:23:24 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/11 00:28:33 by turmoil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,10 @@
 # include <unistd.h>
 # include <stdint.h>
 # include <stdbool.h>
-# include <stdlib.h>
-# include <string.h>
 # include <inttypes.h>
 
 # define RESET   "\x1b[0m"
-# define OLIVE "\x1b[2;33m"
-
+# define OLIVE   "\x1b[2;33m"
 # define RED     "\x1b[91m"
 # define BLACK   "\x1b[90m"
 # define GREEN   "\x1b[92m"
@@ -57,7 +54,7 @@ typedef struct s_data
 	uint16_t		number_of_times_each_philosopher_must_eat;
 	t_philo			philos[MAX_P];
 	pthread_mutex_t	forks[MAX_P];
-	bool			is_fork_available[MAX_P];
+	bool			forks_table[MAX_P];
 	pthread_mutex_t	monitor;
 	pthread_mutex_t	print_mutex;
 	uint64_t		starting_time;
@@ -77,8 +74,7 @@ bool		monitor(t_data *data, t_philo *philo);
 void		p(t_data *data, char *color, char *msg, int id);
 void		uwait(uint32_t wait);
 bool		sim(t_data *data);
-void		fork_availability(t_data *data, t_philo *philo, bool fork,
-				bool avail);
-void		leave_forks(t_data *data);
+void		fork_assign(t_data *data, t_philo *philo, char *fork, bool set);
+bool		my_strcmp(const char *s1, const char *s2);
 
 #endif

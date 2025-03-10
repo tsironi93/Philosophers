@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:20:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/10 18:23:02 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/11 00:10:00 by turmoil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	init_data(int ac, char **av, t_data *data)
 	while (++i < data->number_of_philosophers)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
-		data->is_fork_available[i] = true;
+		data->forks_table[i] = false;
 	}
 	pthread_mutex_init(&data->monitor, NULL);
 	return (true);
@@ -72,18 +72,6 @@ bool	create_threads(t_data *data)
 			return (printf("Error creating threads\n"), false);
 	}
 	return (true);
-}
-
-void	leave_forks(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	while (++i < data->number_of_philosophers)
-	{
-		if (!data->is_fork_available[i])
-			pthread_mutex_unlock(&data->forks[i]);
-	}
 }
 
 bool	destroy_threads(t_data *data)
