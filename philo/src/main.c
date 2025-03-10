@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:43:59 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 17:08:49 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/09 21:16:34 by turmoil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	start_thinking(t_philo *philo, t_data *data)
 {
 	p(data, MAGENTA, "is thinking", philo->id);
+	if (data->number_of_philosophers % 2 == 1)
+	uwait(30);
 }
 
 void	start_sleeping(t_philo *philo, t_data *data)
@@ -29,6 +31,7 @@ void	start_eating(t_philo *philo, t_data *data)
 
 	p(data, YELLOW, "is eating", philo->id);
 	current_time = get_time() - data->starting_time;
+    philo->meals_ate++;
 	philo->time_to_eat_again = current_time + data->time_to_die;
 	uwait(data->time_to_eat);
 	if (philo->id % 2 == 0)
@@ -72,11 +75,9 @@ void	*lets_play(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
+    start_thinking(philo, data);
 	if (philo->id % 2 == 1)
-	{
-		start_thinking(philo, data);
 		uwait(data->time_to_eat / 2);
-	}
 	while (1)
 	{
 		get_forks(philo, data);

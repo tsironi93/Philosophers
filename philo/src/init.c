@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:20:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/08 16:56:16 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/09 00:48:00 by turmoil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ bool	init_philos(t_data *data)
 		data->philos[i].left_fork
 			= &data->forks[(i + 1) % data->number_of_philosophers];
 		data->philos[i].time_to_eat_again = data->time_to_die;
+        data->philos[i].meals_ate = 0;
 		data->philos[i].data = data;
 	}
 	return (true);
@@ -78,6 +79,7 @@ bool	destroy_threads(t_data *data)
 	i = -1;
 	while (++i < data->number_of_philosophers)
 	{
+        pthread_mutex_unlock(&data->forks[i]);
 		if (pthread_join(data->philos[i].thread, NULL))
 			return (printf("Error joining threads\n"), false);
 		pthread_mutex_destroy(&data->forks[i]);

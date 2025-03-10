@@ -8,7 +8,7 @@ CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror -O2
 
 ifdef DEBUG
-FLAGS	+=	-fsanitize=address -fno-omit-frame-pointer
+FLAGS	+=	-fsanitize=threads -fno-omit-frame-pointer
 endif
 
 SRC_DIR			=	src
@@ -72,6 +72,9 @@ $(OBJ_DIR):
 %.o: %.c $(HEADER)
 	@$(CC) $(FLAGS) -c $< -o $@
 
+debug: $(OBJ)
+	@echo "\n\t   $(GREEN)$(LBOR)Debug mode$(RBOR)$(WHITE)\n"
+	@$(MAKE) DEBUG=1
 
 clean:
 	@echo "\n\t   $(PINK)$(LBOR)Cleaning$(RBOR)$(WHITE)\n"
@@ -87,5 +90,11 @@ re:
 	@echo "\n\t$(BLUE)$(LBOR)Here we go again$(RBOR)$(WHITE)\n"
 	@$(MAKE) fclean
 	@$(MAKE) all
+
+valgrind: re
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+
+helgrind: $(NAME)
+	valgrind --tool=helgrind ./$(NAME)
 
 .PHONY: all clean fclean re bonus
