@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/11 00:28:33 by turmoil          ###   ########.fr       */
+/*   Updated: 2025/03/11 12:24:33 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,23 @@ typedef struct s_data
 }				t_data;
 
 int			ft_atoi(const char *str);
+bool		my_strcmp(const char *s1, const char *s2);
+
 bool		valid_args(char **av);
-uint64_t	get_time(void);
 bool		init_data(int ac, char **av, t_data *data);
 bool		init_philos(struct s_data *data);
 bool		create_threads(t_data *data);
-bool		destroy_threads(t_data *data);
+void		destroy_threads(t_data *data);
+
+uint64_t	get_time(void);
+void		uwait(uint32_t wait);
+
 void		*lets_play(void *arg);
-void		get_forks(t_philo *philo, t_data *data);
+void		fork_assign(t_data *data, t_philo *philo, char *fork, bool set);
+
 bool		monitor(t_data *data, t_philo *philo);
 void		p(t_data *data, char *color, char *msg, int id);
-void		uwait(uint32_t wait);
-bool		sim(t_data *data);
-void		fork_assign(t_data *data, t_philo *philo, char *fork, bool set);
-bool		my_strcmp(const char *s1, const char *s2);
+bool		read_bool(t_data *data, bool rand);
+uint16_t	read_time(t_data *data, uint16_t value);
 
 #endif

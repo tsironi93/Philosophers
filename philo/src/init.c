@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:20:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/11 00:10:00 by turmoil          ###   ########.fr       */
+/*   Updated: 2025/03/11 12:52:07 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ bool	create_threads(t_data *data)
 	return (true);
 }
 
-bool	destroy_threads(t_data *data)
+void	destroy_threads(t_data *data)
 {
 	int	i;
 
@@ -82,8 +82,6 @@ bool	destroy_threads(t_data *data)
 	while (++i < data->number_of_philosophers)
 	{
 		if (pthread_join(data->philos[i].thread, NULL))
-			return (printf("Error joining threads\n"), false);
-		pthread_mutex_destroy(&data->forks[i]);
+			printf("Error joining threads\n");
 	}
-	return (true);
 }

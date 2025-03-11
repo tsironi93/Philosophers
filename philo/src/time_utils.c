@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 15:43:59 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/11 09:53:48 by itsiros          ###   ########.fr       */
+/*   Created: 2025/03/11 14:11:41 by itsiros           #+#    #+#             */
+/*   Updated: 2025/03/11 14:12:03 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	main(int ac, char **av)
+void	uwait(uint32_t wait)
 {
-	t_data	data;
+	uint64_t	start_time;
 
-	if (!init_data(ac, av, &data))
-		return (-1);
-	if (!init_philos(&data))
-		return (-1);
-	if (!create_threads(&data))
-		return (-1);
-	while (!read_bool(&data, data.sim_stop))
-		if (!monitor(&data, data.philos))
-			break ;
-	destroy_threads(&data);
-	return (0);
+	start_time = get_time();
+	while ((get_time() - start_time) < wait)
+		usleep(500);
+}
+
+uint64_t	get_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL))
+		return (0);
+	return ((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000));
 }

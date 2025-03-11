@@ -6,7 +6,7 @@
 /*   By: turmoil <jtsiros93@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:57:23 by turmoil           #+#    #+#             */
-/*   Updated: 2025/03/11 00:39:06 by turmoil          ###   ########.fr       */
+/*   Updated: 2025/03/11 12:53:20 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	_start_thinking(t_philo *philo, t_data *data)
 static void	_start_sleeping(t_philo *philo, t_data *data)
 {
 	p(data, CYAN, "is sleeping", philo->id);
-	uwait(data->time_to_sleep);
+	uwait(read_time(data, data->time_to_sleep));
 }
 
 static void	_start_eating(t_philo *philo, t_data *data)
@@ -35,7 +35,7 @@ static void	_start_eating(t_philo *philo, t_data *data)
 	philo->meals_ate++;
 	philo->time_to_eat_again = current_time + data->time_to_die;
 	pthread_mutex_unlock(&data->monitor);
-	uwait(data->time_to_eat);
+	uwait(read_time(data, data->time_to_eat));
 	if (philo->id % 2 == 0)
 	{
 		fork_assign(data, philo, "left", false);
@@ -53,16 +53,20 @@ static void	_get_forks(t_philo *philo, t_data *data)
 	if (philo->id % 2 == 0)
 	{
 		fork_assign(data, philo, "right", true);
-		p(data, OLIVE, "has taken a fork", philo->id);
+		if (!read_bool(data, data->sim_stop))
+			p(data, OLIVE, "has taken a fork", philo->id);
 		fork_assign(data, philo, "left", true);
-		p(data, OLIVE, "has taken a fork", philo->id);
+		if (!read_bool(data, data->sim_stop))
+			p(data, OLIVE, "has taken a fork", philo->id);
 	}
 	else
 	{
 		fork_assign(data, philo, "left", true);
-		p(data, OLIVE, "has taken a fork", philo->id);
+		if (!read_bool(data, data->sim_stop))
+			p(data, OLIVE, "has taken a fork", philo->id);
 		fork_assign(data, philo, "right", true);
-		p(data, OLIVE, "has taken a fork", philo->id);
+		if (!read_bool(data, data->sim_stop))
+			p(data, OLIVE, "has taken a fork", philo->id);
 	}
 }
 
@@ -78,16 +82,16 @@ void	*lets_play(void *arg)
 		_start_thinking(philo, data);
 		uwait(data->time_to_eat / 2);
 	}
-	while (!sim(data))
+	while (!read_bool(data, data->sim_stop))
 	{
 		_get_forks(philo, data);
-		if (sim(data))
+		if (read_bool(data, data->sim_stop))
 			break ;
 		_start_eating(philo, data);
-		if (sim(data))
+		if (read_bool(data, data->sim_stop))
 			break ;
 		_start_sleeping(philo, data);
-		if (sim(data))
+		if (read_bool(data, data->sim_stop))
 			break ;
 		_start_thinking(philo, data);
 	}
