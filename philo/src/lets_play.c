@@ -6,7 +6,7 @@
 /*   By: turmoil <jtsiros93@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:57:23 by turmoil           #+#    #+#             */
-/*   Updated: 2025/03/11 12:53:20 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/12 09:42:31 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,19 @@ static void	_get_forks(t_philo *philo, t_data *data)
 	if (philo->id % 2 == 0)
 	{
 		fork_assign(data, philo, "right", true);
-		if (!read_bool(data, data->sim_stop))
+		if (!sim(data))
 			p(data, OLIVE, "has taken a fork", philo->id);
 		fork_assign(data, philo, "left", true);
-		if (!read_bool(data, data->sim_stop))
+		if (!sim(data))
 			p(data, OLIVE, "has taken a fork", philo->id);
 	}
 	else
 	{
 		fork_assign(data, philo, "left", true);
-		if (!read_bool(data, data->sim_stop))
+		if (!sim(data))
 			p(data, OLIVE, "has taken a fork", philo->id);
 		fork_assign(data, philo, "right", true);
-		if (!read_bool(data, data->sim_stop))
+		if (!sim(data))
 			p(data, OLIVE, "has taken a fork", philo->id);
 	}
 }
@@ -82,16 +82,16 @@ void	*lets_play(void *arg)
 		_start_thinking(philo, data);
 		uwait(data->time_to_eat / 2);
 	}
-	while (!read_bool(data, data->sim_stop))
+	while (!sim(data))
 	{
 		_get_forks(philo, data);
-		if (read_bool(data, data->sim_stop))
+		if (sim(data))
 			break ;
 		_start_eating(philo, data);
-		if (read_bool(data, data->sim_stop))
+		if (sim(data))
 			break ;
 		_start_sleeping(philo, data);
-		if (read_bool(data, data->sim_stop))
+		if (sim(data))
 			break ;
 		_start_thinking(philo, data);
 	}

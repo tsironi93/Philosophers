@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 11:05:36 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/11 14:12:21 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/12 12:44:04 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,24 @@ void	fork_assign(t_data *data, t_philo *philo, char *fork, bool set)
 	if (my_strcmp(fork, "right"))
 	{
 		if (set)
-			while (read_bool(data,
-					data->forks_table[read_time(data, philo->id)])
-				== true && !read_bool(data, data->sim_stop))
+			while (data->forks_table[read_time(data, philo->id)] == true
+				&& !sim(data))
 				uwait(2);
-		pthread_mutex_lock(&data->monitor);
-		data->forks_table[philo->id] = set;
-		pthread_mutex_unlock(&data->monitor);
+		pthread_mutex_lock(philo->right_fork);
+		data->forks_table[read_time(data, philo->id)] = set;
+		pthread_mutex_unlock(philo->right_fork);
 	}
 	else
 	{
 		if (set)
-			while (read_bool(data,
-					data->forks_table[(read_time(data, philo->id) + 1)
-						% read_time(data, data->number_of_philosophers)])
-				== true && !read_bool(data, data->sim_stop))
+			while (data->forks_table[(read_time(data, philo->id) + 1)
+					% read_time(data, data->number_of_philosophers)] == true
+				&& !sim(data))
 				uwait(2);
-		pthread_mutex_lock(&data->monitor);
-		data->forks_table[(philo->id + 1) % data->number_of_philosophers] = set;
-		pthread_mutex_unlock(&data->monitor);
+		pthread_mutex_lock(philo->left_fork);
+		data->forks_table[(read_time(data, philo->id) + 1)
+			% data->number_of_philosophers] = set;
+		pthread_mutex_unlock(philo->left_fork);
 	}
 }
 
@@ -49,12 +48,12 @@ uint16_t	read_time(t_data *data, uint16_t value)
 	return (res);
 }
 
-bool	read_bool(t_data *data, bool rand)
+bool	sim(t_data *data)
 {
 	bool	res;
 
 	pthread_mutex_lock(&data->monitor);
-	res = rand;
+	res = data->sim_stop;
 	pthread_mutex_unlock(&data->monitor);
 	return (res);
 }
