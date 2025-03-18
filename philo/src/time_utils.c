@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:11:41 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/11 14:12:03 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/18 17:35:22 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	uwait(uint32_t wait)
 
 	start_time = get_time();
 	while ((get_time() - start_time) < wait)
-		usleep(500);
+		usleep(200);
 }
 
 uint64_t	get_time(void)

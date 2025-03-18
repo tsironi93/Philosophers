@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:20:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/11 12:52:07 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/18 18:25:05 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ bool	init_data(int ac, char **av, t_data *data)
 	if (av[5])
 		data->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 	data->sim_stop = false;
-	pthread_mutex_init(&data->print_mutex, NULL);
 	while (++i < data->number_of_philosophers)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
 		data->forks_table[i] = false;
 	}
+	pthread_mutex_init(&data->print_mutex, NULL);
 	pthread_mutex_init(&data->monitor, NULL);
-	return (true);
+	return (pthread_mutex_init(&data->sim, NULL), true);
 }
 
 bool	init_philos(t_data *data)

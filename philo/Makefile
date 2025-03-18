@@ -5,7 +5,7 @@ BONUS_NAME	= 	_bonus
 HEADER	=	
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror -O2 -g
+CFLAGS	=	-Wall -Wextra -Werror -O2 -g #-fsanitize=thread
 
 SRC_DIR			=	src
 OBJ_DIR			=	src_o

@@ -6,7 +6,7 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:21:55 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/12 09:41:50 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/18 18:00:09 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_data
 	pthread_mutex_t	forks[MAX_P];
 	bool			forks_table[MAX_P];
 	pthread_mutex_t	monitor;
+	pthread_mutex_t	sim;
 	pthread_mutex_t	print_mutex;
 	uint64_t		starting_time;
 	bool			sim_stop;
@@ -79,6 +80,6 @@ void		fork_assign(t_data *data, t_philo *philo, char *fork, bool set);
 bool		monitor(t_data *data, t_philo *philo);
 void		p(t_data *data, char *color, char *msg, int id);
 bool		sim(t_data *data);
-uint16_t	read_time(t_data *data, uint16_t value);
+uint64_t	read_time(t_data *data, uint64_t value);
 
 #endif

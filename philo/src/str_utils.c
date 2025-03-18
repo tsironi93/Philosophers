@@ -6,11 +6,21 @@
 /*   By: itsiros <itsiros@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 14:48:51 by itsiros           #+#    #+#             */
-/*   Updated: 2025/03/11 14:09:47 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/18 18:26:39 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+void	p(t_data *data, char *color, char *msg, int id)
+{
+	uint64_t	current_time;
+
+	pthread_mutex_lock(&data->print_mutex);
+	current_time = get_time() - data->starting_time;
+	printf("%s%" PRIu64 " %d %s" RESET "\n", color, current_time, id, msg);
+	pthread_mutex_unlock(&data->print_mutex);
+}
 
 bool	valid_args(char **av)
 {

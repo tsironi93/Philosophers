@@ -6,7 +6,7 @@
 /*   By: turmoil <jtsiros93@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:57:23 by turmoil           #+#    #+#             */
-/*   Updated: 2025/03/12 09:42:31 by itsiros          ###   ########.fr       */
+/*   Updated: 2025/03/18 17:50:45 by itsiros          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	_start_thinking(t_philo *philo, t_data *data)
 {
 	p(data, MAGENTA, "is thinking", philo->id);
 	if (data->number_of_philosophers % 2 == 1)
-		uwait(30);
+		uwait(5);
 }
 
 static void	_start_sleeping(t_philo *philo, t_data *data)
@@ -29,12 +29,12 @@ static void	_start_eating(t_philo *philo, t_data *data)
 {
 	uint64_t	current_time;
 
-	p(data, YELLOW, "is eating", philo->id);
 	current_time = get_time() - data->starting_time;
 	pthread_mutex_lock(&data->monitor);
-	philo->meals_ate++;
 	philo->time_to_eat_again = current_time + data->time_to_die;
+	philo->meals_ate++;
 	pthread_mutex_unlock(&data->monitor);
+	p(data, YELLOW, "is eating", philo->id);
 	uwait(read_time(data, data->time_to_eat));
 	if (philo->id % 2 == 0)
 	{
@@ -77,7 +77,7 @@ void	*lets_play(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 0)
 	{
 		_start_thinking(philo, data);
 		uwait(data->time_to_eat / 2);
